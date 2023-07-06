@@ -16,16 +16,22 @@ public:
 	AFPSObjectActor();
 	
 protected:
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(EditAnywhere,Category="Components")
 	UStaticMeshComponent* MeshComponent;
 
-	UPROPERTY(VisibleAnywhere,Category="Components")
+	UPROPERTY(EditAnywhere,Category="Components")
 	class USphereComponent* SphereComponent;
-	
+
+	//碰撞特效
+	UPROPERTY(EditDefaultsOnly,Category="Effects")
+	UParticleSystem* PickupFX;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	void PlayEffects();
+
+	virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
