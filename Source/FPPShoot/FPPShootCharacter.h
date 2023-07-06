@@ -38,7 +38,6 @@ class AFPPShootCharacter : public ACharacter
 	/** Move Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category=Input, meta=(AllowPrivateAccess = "true"))
 	class UInputAction* MoveAction;
-
 	
 public:
 	AFPPShootCharacter();
@@ -64,6 +63,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Weapon)
 	bool GetHasRifle();
 
+	//是否携带物体
+	UPROPERTY(BlueprintReadOnly,Category="Gameplay")
+	bool bIsCarringObjective;
+	
 protected:
 	/** Called for movement input */
 	void Move(const FInputActionValue& Value);

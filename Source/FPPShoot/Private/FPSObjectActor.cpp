@@ -4,6 +4,7 @@
 #include "FPSObjectActor.h"
 
 #include "Components/SphereComponent.h"
+#include "FPPShoot/FPPShootCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -39,7 +40,13 @@ void AFPSObjectActor::PlayEffects()
 void AFPSObjectActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
-	PlayEffects();
+	AFPPShootCharacter* MyCharacter=Cast<AFPPShootCharacter>(OtherActor);
+	if (MyCharacter)
+	{
+		MyCharacter->bIsCarringObjective=true;
+		PlayEffects();
+		Destroy();
+	}
 }
 
 // Called every frame
