@@ -5,8 +5,11 @@
 
 #include "Components/BoxComponent.h"
 #include "Components/DecalComponent.h"
+#include "FPPShoot/FPPShootCharacter.h"
+#include "FPPShoot/FPPShootGameMode.h"
 
 
+class AFPPShootGameMode;
 // Sets default values
 AFPSExtractionZone::AFPSExtractionZone()
 {
@@ -39,7 +42,17 @@ void AFPSExtractionZone::BeginPlay()
 void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1,-1.5f,FColor::Green,TEXT("到达通关口"));
+	//GEngine->AddOnScreenDebugMessage(-1,-1.5f,FColor::Green,TEXT("到达通关口"));
+	AFPPShootCharacter* MyPawn=Cast<AFPPShootCharacter>(OtherActor);
+	if (MyPawn&&MyPawn->bIsCarringObjective==true)
+	{
+		//停止一切操作
+		AFPPShootGameMode* GameMode=Cast<AFPPShootGameMode>(GetWorld()->GetAuthGameMode());
+		if (GameMode)
+		{
+			GameMode->CompleteMission(MyPawn);
+		}
+	}
 }
 
 // Called every frame

@@ -12,3 +12,13 @@ AFPPShootGameMode::AFPPShootGameMode()
 	DefaultPawnClass = PlayerPawnClassFinder.Class;
 
 }
+
+void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn)
+{
+	if (InstigatorPawn)
+	{
+		//禁用输入
+		InstigatorPawn->DisableInput(nullptr);
+	}
+	OnMissionCompleted(InstigatorPawn);
+}
