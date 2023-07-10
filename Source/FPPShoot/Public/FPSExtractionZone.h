@@ -21,7 +21,10 @@ public:
 protected:
 	UPROPERTY(EditAnywhere,Category="Components")
 	UBoxComponent* OverlapComponent;
-	
+
+	//贴花组件
+	UPROPERTY(EditAnywhere,Category="Components")
+	UDecalComponent* DecalComponent;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

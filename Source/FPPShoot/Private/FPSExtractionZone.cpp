@@ -4,6 +4,7 @@
 #include "FPSExtractionZone.h"
 
 #include "Components/BoxComponent.h"
+#include "Components/DecalComponent.h"
 
 
 // Sets default values
@@ -13,15 +14,19 @@ AFPSExtractionZone::AFPSExtractionZone()
 	PrimaryActorTick.bCanEverTick = true;
 
 	OverlapComponent=CreateDefaultSubobject<UBoxComponent>("OverlapComponent");
-	OverlapComponent->SetupAttachment(RootComponent);
+	RootComponent=OverlapComponent;
 	
 	OverlapComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	OverlapComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	OverlapComponent->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
 	OverlapComponent->SetBoxExtent(FVector(200.f));
 	OverlapComponent->OnComponentBeginOverlap.AddDynamic(this,&AFPSExtractionZone::HandleOverlap);
-
 	OverlapComponent->SetHiddenInGame(false);
+
+	//创建贴花
+	DecalComponent=CreateDefaultSubobject<UDecalComponent>("DecalComponent");
+	DecalComponent->DecalSize=FVector(200.f);
+	DecalComponent->SetupAttachment(OverlapComponent);
 	
 }
 
