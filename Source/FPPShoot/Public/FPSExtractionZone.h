@@ -25,6 +25,12 @@ protected:
 	//贴花组件
 	UPROPERTY(EditAnywhere,Category="Components")
 	UDecalComponent* DecalComponent;
+
+	/**
+	 * @brief 未携带物品进入通过口的提示音效
+	 */
+	UPROPERTY(EditAnywhere,Category="Sounds")
+	USoundBase* ObjectiveMissingSound;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

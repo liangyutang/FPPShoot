@@ -7,6 +7,7 @@
 #include "Components/DecalComponent.h"
 #include "FPPShoot/FPPShootCharacter.h"
 #include "FPPShoot/FPPShootGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 
 class AFPPShootGameMode;
@@ -44,14 +45,21 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 {
 	//GEngine->AddOnScreenDebugMessage(-1,-1.5f,FColor::Green,TEXT("到达通关口"));
 	AFPPShootCharacter* MyPawn=Cast<AFPPShootCharacter>(OtherActor);
-	if (MyPawn&&MyPawn->bIsCarringObjective==true)
+	if (MyPawn==nullptr)
+	{
+		return;
+	}
+	if (MyPawn->bIsCarringObjective==true)
 	{
 		//停止一切操作
-		AFPPShootGameMode* GameMode=Cast<AFPPShootGameMode>(GetWorld()->GetAuthGameMode());
-		if (GameMode)
+		if (AFPPShootGameMode* GameMode=Cast<AFPPShootGameMode>(GetWorld()->GetAuthGameMode()))
 		{
 			GameMode->CompleteMission(MyPawn);
 		}
+	}
+	else
+	{
+		UGameplayStatics::PlaySound2D(this,ObjectiveMissingSound);
 	}
 }
 
