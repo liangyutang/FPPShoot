@@ -2,6 +2,7 @@
 
 #include "FPPShootGameMode.h"
 #include "FPPShootCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "UObject/ConstructorHelpers.h"
 
 AFPPShootGameMode::AFPPShootGameMode()
@@ -19,6 +20,24 @@ void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn)
 	{
 		//禁用输入
 		InstigatorPawn->DisableInput(nullptr);
+	}
+	if (SpectViewPointClass)
+	{
+		TArray<AActor*> ReturnedActors;
+		UGameplayStatics::GetAllActorsOfClass(this,SpectViewPointClass,ReturnedActors);
+		if (ReturnedActors.Num()>0)
+		{
+			AActor* NewViewTarget=ReturnedActors[0];
+			APlayerController* PC=Cast<APlayerController>(InstigatorPawn->GetController());
+			if (PC)
+			{
+				PC->SetViewTargetWithBlend(NewViewTarget,0.5f,VTBlend_Cubic);
+			}
+			else
+			{
+				UE_LOG(LogTemp,Warning,TEXT("空指针"));
+			}
+		}
 	}
 	OnMissionCompleted(InstigatorPawn);
 }
