@@ -66,6 +66,12 @@ public:
 	//是否携带物体
 	UPROPERTY(BlueprintReadOnly,Category="Gameplay")
 	bool bIsCarringObjective;
+
+protected:
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
+
 	
 protected:
 	/** Called for movement input */

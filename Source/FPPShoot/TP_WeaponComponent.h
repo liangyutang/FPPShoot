@@ -49,6 +49,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire();
 
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
+	
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()

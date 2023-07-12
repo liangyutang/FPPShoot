@@ -35,6 +35,15 @@ protected:
 	 */
 	UFUNCTION()
 	void OnPawnSeen(APawn* SeenPawn);
+
+	/**
+	 * @brief 听玩家声音
+	 * @param Instigat 
+	 * @param Location 
+	 * @param Volume 
+	 */
+	UFUNCTION()
+	void OnNoiseHeard(APawn* Instigat,const FVector &Location,float Volume);
 	
 public:	
 	// Called every frame

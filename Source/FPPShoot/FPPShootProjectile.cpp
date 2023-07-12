@@ -36,12 +36,14 @@ void AFPPShootProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 {
 	//实现子弹碰撞粒子效果
 	UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
+	//创建声音
+	MakeNoise(1.0f,GetInstigator());
 
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
 	{
 		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
+		
 		Destroy();
 	}
 }

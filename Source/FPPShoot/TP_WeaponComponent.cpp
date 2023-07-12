@@ -9,12 +9,16 @@
 #include "Kismet/GameplayStatics.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Components/PawnNoiseEmitterComponent.h"
 
 // Sets default values for this component's properties
 UTP_WeaponComponent::UTP_WeaponComponent()
 {
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(100.0f, 0.0f, 10.0f);
+
+	//创建声音发射器组件
+	NoiseEmitterComponent=CreateDefaultSubobject<UPawnNoiseEmitterComponent>("NoiseEmitterComponent");
 }
 
 
@@ -39,7 +43,8 @@ void UTP_WeaponComponent::Fire()
 			//Set Spawn Collision Handling Override
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-	
+			ActorSpawnParams.Instigator=UGameplayStatics::GetPlayerPawn(this,0);
+			
 			// Spawn the projectile at the muzzle
 			World->SpawnActor<AFPPShootProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
 		}

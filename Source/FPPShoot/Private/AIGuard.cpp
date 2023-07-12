@@ -14,6 +14,8 @@ AAIGuard::AAIGuard()
 	PawnSensingComponent=CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComponent");
 	//看到玩家
 	PawnSensingComponent->OnSeePawn.AddDynamic(this,&AAIGuard::OnPawnSeen);
+	//听到玩家
+	PawnSensingComponent->OnHearNoise.AddDynamic(this,&AAIGuard::OnNoiseHeard);
 }
 
 // Called when the game starts or when spawned
@@ -31,6 +33,12 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	}
 	//3D球
 	DrawDebugSphere(GetWorld(),SeenPawn->GetActorLocation(),32.f,12,FColor::Yellow,false,10);
+}
+
+void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volume)
+{
+	//3D球
+	DrawDebugSphere(GetWorld(),Location,32.f,12,FColor::Green,false,10);
 }
 
 // Called every frame
