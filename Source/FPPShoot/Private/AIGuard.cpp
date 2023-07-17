@@ -39,6 +39,13 @@ void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volu
 {
 	//3D球
 	DrawDebugSphere(GetWorld(),Location,32.f,12,FColor::Green,false,10);
+
+	//获得朝向
+	FVector Direction=Location-GetActorLocation();
+	Direction.Normalize();
+	
+	FRotator NewLookAt=FRotationMatrix::MakeFromX(Direction).Rotator();
+	SetActorRotation(NewLookAt);
 }
 
 // Called every frame
