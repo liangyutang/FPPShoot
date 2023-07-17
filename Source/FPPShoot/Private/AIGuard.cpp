@@ -22,6 +22,7 @@ AAIGuard::AAIGuard()
 void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
+	OriginalRotation=GetActorRotation();
 	
 }
 
@@ -40,12 +41,23 @@ void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volu
 	//3D球
 	DrawDebugSphere(GetWorld(),Location,32.f,12,FColor::Green,false,10);
 
+	/*UE_LOG(LogTemp,Error,TEXT("2:%f  %f   %f"),Location.X,Location.Y,Location.Z);*/
 	//获得朝向
 	FVector Direction=Location-GetActorLocation();
 	Direction.Normalize();
 	
 	FRotator NewLookAt=FRotationMatrix::MakeFromX(Direction).Rotator();
+	NewLookAt.Pitch=0.f;
+	NewLookAt.Roll=0.f;
 	SetActorRotation(NewLookAt);
+
+	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrient);
+	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrient,this,&AAIGuard::ResetOrientation,ResetOrientTime);
+}
+
+void AAIGuard::ResetOrientation()
+{
+	SetActorRotation(OriginalRotation);
 }
 
 // Called every frame

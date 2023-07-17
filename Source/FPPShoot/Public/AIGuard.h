@@ -24,7 +24,12 @@ protected:
 	 */
 	UPROPERTY(EditAnywhere,Category="Components")
 	UPawnSensingComponent* PawnSensingComponent;
-	
+
+	FRotator OriginalRotation;
+
+	FTimerHandle TimerHandle_ResetOrient;
+
+	float ResetOrientTime=3.f;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -44,7 +49,8 @@ protected:
 	 */
 	UFUNCTION()
 	void OnNoiseHeard(APawn* Instigat,const FVector &Location,float Volume);
-	
+
+	void ResetOrientation();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
