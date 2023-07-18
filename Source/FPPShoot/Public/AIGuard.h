@@ -6,6 +6,13 @@
 #include "GameFramework/Character.h"
 #include "AIGuard.generated.h"
 
+UENUM(BlueprintType)
+enum class EAIState:uint8
+{
+	Idle,
+	Suspicious,
+	Alerted
+};
 
 class UPawnSensingComponent;
 
@@ -30,6 +37,9 @@ protected:
 	FTimerHandle TimerHandle_ResetOrient;
 
 	float ResetOrientTime=3.f;
+
+	//守卫状态
+	EAIState GuardState;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -51,6 +61,11 @@ protected:
 	void OnNoiseHeard(APawn* Instigat,const FVector &Location,float Volume);
 
 	void ResetOrientation();
+
+	void SetGuardState(EAIState NewState);
+
+	UFUNCTION(BlueprintImplementableEvent,Category="AI")
+	void OnStateChanged(EAIState NewState);
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -18,6 +18,8 @@ AAIGuard::AAIGuard()
 	PawnSensingComponent->OnSeePawn.AddDynamic(this,&AAIGuard::OnPawnSeen);
 	//听到玩家
 	PawnSensingComponent->OnHearNoise.AddDynamic(this,&AAIGuard::OnNoiseHeard);
+
+	GuardState=EAIState::Idle;
 }
 
 // Called when the game starts or when spawned
@@ -42,10 +44,17 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 		//游戏结束（失败）
 		GameMode->CompleteMission(SeenPawn,false);
 	}
+	SetGuardState(EAIState::Alerted);
 }
 
 void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volume)
 {
+	
+	if (GuardState==EAIState::Alerted)
+	{
+		return;
+	}
+	
 	//3D球
 	DrawDebugSphere(GetWorld(),Location,32.f,12,FColor::Green,false,10);
 
@@ -61,11 +70,31 @@ void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volu
 
 	GetWorldTimerManager().ClearTimer(TimerHandle_ResetOrient);
 	GetWorldTimerManager().SetTimer(TimerHandle_ResetOrient,this,&AAIGuard::ResetOrientation,ResetOrientTime);
+	
+	SetGuardState(EAIState::Suspicious);
 }
 
 void AAIGuard::ResetOrientation()
 {
+	if (GuardState==EAIState::Alerted)
+	{
+		return;
+	}
+	
 	SetActorRotation(OriginalRotation);
+	
+	GuardState==EAIState::Idle;
+}
+
+void AAIGuard::SetGuardState(EAIState NewState)
+{
+	if (GuardState==NewState)
+	{
+		return;
+	}
+	GuardState=NewState;
+
+	OnStateChanged(NewState);
 }
 
 // Called every frame
