@@ -5,6 +5,7 @@
 
 #include "FPPShoot/FPPShootGameMode.h"
 #include "Perception/PawnSensingComponent.h"
+#include "Net/UnrealNetwork.h"
 
 // Sets default values
 AAIGuard::AAIGuard()
@@ -95,8 +96,14 @@ void AAIGuard::SetGuardState(EAIState NewState)
 		return;
 	}
 	GuardState=NewState;
+	
+	On_RepGuardState();
+	OnStateChanged(GuardState);
+}
 
-	OnStateChanged(NewState);
+void AAIGuard::On_RepGuardState()
+{
+	OnStateChanged(GuardState);
 }
 
 // Called every frame
@@ -104,5 +111,13 @@ void AAIGuard::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+//向客户端发送信息的规则
+void AAIGuard::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AAIGuard,GuardState);
 }
 

@@ -24,67 +24,9 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
-	if (Character->GetLocalRole()==ROLE_Authority)
-	{
-		ServerFire();
-	}
-	else
-	{
-		ClientFire();
-	}
-	
+	ServerFire();
 }
 
-void UTP_WeaponComponent::ClientFire_Implementation()
-{
-	if (Character == nullptr || Character->GetController() == nullptr)
-	{
-		return;
-	}
-
-	// Try and fire a projectile
-	if (ProjectileClass != nullptr)
-	{
-		UWorld* const World = GetWorld();
-		if (World != nullptr)
-		{
-			APlayerController* PlayerController = Cast<APlayerController>(Character->GetController());
-			const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
-			// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-			const FVector SpawnLocation = GetOwner()->GetActorLocation() + SpawnRotation.RotateVector(MuzzleOffset);
-	
-			//Set Spawn Collision Handling Override
-			FActorSpawnParameters ActorSpawnParams;
-			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-			ActorSpawnParams.Instigator=UGameplayStatics::GetPlayerPawn(this,1);
-			
-			// Spawn the projectile at the muzzle
-			World->SpawnActor<AFPPShootProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
-		}
-	}
-	
-	// Try and play the sound if specified
-	if (FireSound != nullptr)
-	{
-		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
-	}
-	
-	// Try and play a firing animation if specified
-	if (FireAnimation != nullptr)
-	{
-		// Get the animation object for the arms mesh
-		UAnimInstance* AnimInstance = Character->GetMesh1P()->GetAnimInstance();
-		if (AnimInstance != nullptr)
-		{
-			AnimInstance->Montage_Play(FireAnimation, 1.f);
-		}
-	}
-}
-
-bool UTP_WeaponComponent::ClientFire_Validate()
-{
-	return true;
-}
 
 void UTP_WeaponComponent::ServerFire_Implementation()
 {

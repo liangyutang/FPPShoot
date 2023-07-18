@@ -39,7 +39,9 @@ protected:
 	float ResetOrientTime=3.f;
 
 	//守卫状态
+	UPROPERTY(ReplicatedUsing=On_RepGuardState)
 	EAIState GuardState;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -66,6 +68,9 @@ protected:
 
 	UFUNCTION(BlueprintImplementableEvent,Category="AI")
 	void OnStateChanged(EAIState NewState);
+
+	UFUNCTION()
+	void On_RepGuardState();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
