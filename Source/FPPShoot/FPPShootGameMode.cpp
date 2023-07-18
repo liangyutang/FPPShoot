@@ -14,7 +14,7 @@ AFPPShootGameMode::AFPPShootGameMode()
 
 }
 
-void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn)
+void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn,bool bMissionSuccess)
 {
 	if (InstigatorPawn)
 	{
@@ -23,6 +23,7 @@ void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn)
 	}
 	if (SpectViewPointClass)
 	{
+		//移动摄像机视角/**/
 		TArray<AActor*> ReturnedActors;
 		UGameplayStatics::GetAllActorsOfClass(this,SpectViewPointClass,ReturnedActors);
 		if (ReturnedActors.Num()>0)
@@ -39,5 +40,5 @@ void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn)
 			}
 		}
 	}
-	OnMissionCompleted(InstigatorPawn);
+	OnMissionCompleted(InstigatorPawn,bMissionSuccess);
 }

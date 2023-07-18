@@ -54,7 +54,8 @@ void AFPSExtractionZone::HandleOverlap(UPrimitiveComponent* OverlappedComponent,
 		//停止一切操作
 		if (AFPPShootGameMode* GameMode=Cast<AFPPShootGameMode>(GetWorld()->GetAuthGameMode()))
 		{
-			GameMode->CompleteMission(MyPawn);
+			//游戏结束（成功）
+			GameMode->CompleteMission(MyPawn,true);
 		}
 	}
 	else

@@ -2,6 +2,8 @@
 
 
 #include "AIGuard.h"
+
+#include "FPPShoot/FPPShootGameMode.h"
 #include "Perception/PawnSensingComponent.h"
 
 // Sets default values
@@ -34,6 +36,12 @@ void AAIGuard::OnPawnSeen(APawn* SeenPawn)
 	}
 	//3D球
 	DrawDebugSphere(GetWorld(),SeenPawn->GetActorLocation(),32.f,12,FColor::Yellow,false,10);
+	//停止一切操作
+	if (AFPPShootGameMode* GameMode=Cast<AFPPShootGameMode>(GetWorld()->GetAuthGameMode()))
+	{
+		//游戏结束（失败）
+		GameMode->CompleteMission(SeenPawn,false);
+	}
 }
 
 void AAIGuard::OnNoiseHeard(APawn* Instigat, const FVector& Location, float Volume)
