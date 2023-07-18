@@ -24,6 +24,11 @@ UTP_WeaponComponent::UTP_WeaponComponent()
 
 void UTP_WeaponComponent::Fire()
 {
+	ServerFire();
+}
+
+void UTP_WeaponComponent::ServerFire_Implementation()
+{
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
@@ -67,6 +72,12 @@ void UTP_WeaponComponent::Fire()
 		}
 	}
 }
+
+bool UTP_WeaponComponent::ServerFire_Validate()
+{
+	return true;
+}
+
 
 void UTP_WeaponComponent::AttachWeapon(AFPPShootCharacter* TargetCharacter)
 {

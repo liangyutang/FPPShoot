@@ -30,20 +30,29 @@ AFPPShootProjectile::AFPPShootProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	//设置客户端同步的复制品
+	SetReplicates(true);
+	SetReplicateMovement(true);
 }
 
 void AFPPShootProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-	//实现子弹碰撞粒子效果
-	UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
-	//创建声音
-	MakeNoise(1.0f,GetInstigator());
-
-	// Only add impulse and destroy projectile if we hit a physics
-	if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+	//玩家是否在服务器上运行代码
+	if (GetLocalRole()==ROLE_Authority)
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
+		//实现子弹碰撞粒子效果
+		UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
+		//创建声音
+		MakeNoise(1.0f,GetInstigator());
+
+		// Only add impulse and destroy projectile if we hit a physics
+		if ((OtherActor != nullptr) && (OtherActor != this) && (OtherComp != nullptr) && OtherComp->IsSimulatingPhysics())
+		{
+			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 		
-		Destroy();
+			Destroy();
+		}
 	}
+	
 }
