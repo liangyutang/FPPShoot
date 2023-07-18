@@ -39,8 +39,8 @@ AFPPShootProjectile::AFPPShootProjectile()
 void AFPPShootProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//玩家是否在服务器上运行代码
-	if (GetLocalRole()==ROLE_Authority)
-	{
+	/*if (GetLocalRole()==ROLE_Authority)
+	{*/
 		//实现子弹碰撞粒子效果
 		UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, GetActorLocation());
 		//创建声音
@@ -53,6 +53,5 @@ void AFPPShootProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor
 		
 			Destroy();
 		}
-	}
-	
+	//}
 }

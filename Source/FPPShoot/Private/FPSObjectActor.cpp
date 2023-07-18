@@ -22,7 +22,9 @@ AFPSObjectActor::AFPSObjectActor()
 	SphereComponent->SetCollisionResponseToAllChannels(ECR_Ignore);
 	SphereComponent->SetCollisionResponseToChannel(ECC_Pawn,ECR_Overlap);
 	SphereComponent->SetupAttachment(MeshComponent);
-	
+
+	//设置客户端同步的复制品
+	SetReplicates(true);
 }
 
 // Called when the game starts or when spawned
@@ -40,13 +42,16 @@ void AFPSObjectActor::PlayEffects()
 void AFPSObjectActor::NotifyActorBeginOverlap(AActor* OtherActor)
 {
 	Super::NotifyActorBeginOverlap(OtherActor);
-	AFPPShootCharacter* MyCharacter=Cast<AFPPShootCharacter>(OtherActor);
-	if (MyCharacter)
-	{
-		MyCharacter->bIsCarringObjective=true;
-		PlayEffects();
-		Destroy();
-	}
+	//玩家是否在服务器上运行代码
+	/*if (GetLocalRole()==ROLE_Authority)
+	{*/
+		if (AFPPShootCharacter* MyCharacter=Cast<AFPPShootCharacter>(OtherActor))
+		{
+			MyCharacter->bIsCarringObjective=true;
+			PlayEffects();
+			Destroy();
+		}
+	/*}*/
 }
 
 // Called every frame

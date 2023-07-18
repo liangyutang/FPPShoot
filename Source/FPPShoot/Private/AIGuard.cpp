@@ -27,7 +27,9 @@ void AAIGuard::BeginPlay()
 {
 	Super::BeginPlay();
 	OriginalRotation=GetActorRotation();
-	
+
+	//设置客户端同步的复制品
+	SetReplicates(true);
 }
 
 void AAIGuard::OnPawnSeen(APawn* SeenPawn)

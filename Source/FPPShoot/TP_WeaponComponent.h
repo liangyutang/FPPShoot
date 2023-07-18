@@ -52,6 +52,10 @@ public:
 	//设置服务器开火
 	UFUNCTION(Server,Reliable,WithValidation)
 	void ServerFire();
+
+	//设置客户端开火
+	UFUNCTION(Client,Reliable,WithValidation)
+	void ClientFire();
 	
 	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
 	UPawnNoiseEmitterComponent* NoiseEmitterComponent;
