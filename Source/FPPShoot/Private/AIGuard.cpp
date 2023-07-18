@@ -83,7 +83,7 @@ void AAIGuard::ResetOrientation()
 	
 	SetActorRotation(OriginalRotation);
 	
-	GuardState==EAIState::Idle;
+	GuardState=EAIState::Idle;
 }
 
 void AAIGuard::SetGuardState(EAIState NewState)
