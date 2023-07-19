@@ -31,10 +31,12 @@ void AFPPShootGameMode::CompleteMission(APawn* InstigatorPawn,bool bMissionSucce
 			if (ReturnedActors.Num()>0)
 			{
 				AActor* NewViewTarget=ReturnedActors[0];
-				APlayerController* PC=Cast<APlayerController>(InstigatorPawn->GetController());
-				if (PC)
+				for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator();It;It++)
 				{
-					PC->SetViewTargetWithBlend(NewViewTarget,0.5f,VTBlend_Cubic);
+					if (APlayerController* PC=It->Get())
+					{
+						PC->SetViewTargetWithBlend(NewViewTarget,0.5f,VTBlend_Cubic);
+					}
 				}
 			}
 		}

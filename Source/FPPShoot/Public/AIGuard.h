@@ -59,7 +59,7 @@ protected:
 	 * @param Location 
 	 * @param Volume 
 	 */
-	UFUNCTION()
+	UFUNCTION(NetMulticast,Reliable)
 	void OnNoiseHeard(APawn* Instigat,const FVector &Location,float Volume);
 
 	void ResetOrientation();

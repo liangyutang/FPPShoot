@@ -50,7 +50,7 @@ public:
 	void Fire();
 
 	//设置服务器开火
-	UFUNCTION(Server,Reliable,WithValidation)
+	UFUNCTION(NetMulticast,Reliable,WithValidation)
 	void ServerFire();
 
 	/*//设置客户端开火
