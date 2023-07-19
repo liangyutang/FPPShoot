@@ -8,6 +8,7 @@
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "Components/PawnNoiseEmitterComponent.h"
+#include "Net/UnrealNetwork.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -110,4 +111,14 @@ void AFPPShootCharacter::SetHasRifle(bool bNewHasRifle)
 bool AFPPShootCharacter::GetHasRifle()
 {
 	return bHasRifle;
+}
+
+//向客户端发送信息的规则
+void AFPPShootCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty> &OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AFPPShootCharacter,bIsCarringObjective);
+	//优化
+	/*DOREPLIFETIME_CONDITION(AFPPShootCharacter,bIsCarringObjective,COND_OwnerOnly);*/
 }

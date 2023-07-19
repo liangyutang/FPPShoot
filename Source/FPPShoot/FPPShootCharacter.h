@@ -64,7 +64,7 @@ public:
 	bool GetHasRifle();
 
 	//是否携带物体
-	UPROPERTY(BlueprintReadOnly,Category="Gameplay")
+	UPROPERTY(Replicated,BlueprintReadOnly,Category="Gameplay")
 	bool bIsCarringObjective;
 
 protected:
